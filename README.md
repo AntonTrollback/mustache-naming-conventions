@@ -100,9 +100,9 @@ By using this set of naming conventions, we solve the problem in the above scena
   <p>
     {{Post_content}}
   </p>
-  {{#Meta}}
+  {{#Post_meta}}
     {{>Meta}}
-  {{/Meta}}
+  {{/Post_meta}}
 </article>
 ```
 
@@ -121,7 +121,7 @@ By using this set of naming conventions, we solve the problem in the above scena
 {
   Post_title: "This is my first post!",
   Post_content: "The content of my first post is great."
-  Meta: {
+  Post_meta: {
     Meta_content: "2015-06-01",
     Meta_author: "Jane Doe"
   }
