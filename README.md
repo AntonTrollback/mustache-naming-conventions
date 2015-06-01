@@ -26,7 +26,9 @@ Let's look at the sample "post"-template below. In the post we are rendering the
   <p>
     {{content}}
   </p>
-  {{>meta}}
+  {{#meta}}
+    {{>meta}}
+  {{/meta}}
 </article>
 ```
 
@@ -98,7 +100,9 @@ By using this set of naming conventions, we solve the problem in the above scena
   <p>
     {{Post_content}}
   </p>
-  {{>Meta}}
+  {{#Meta}}
+    {{>Meta}}
+  {{/Meta}}
 </article>
 ```
 
