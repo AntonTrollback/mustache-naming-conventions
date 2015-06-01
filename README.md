@@ -6,7 +6,7 @@ Name your model properties by this formula...
 
 ```
 {
-  NameOfTemplate_nameOfProperty: "NameOfProperty"
+  NameOfTemplate_nameOfProperty: "This is the content!"
 }
 ```
 ...and use it in your templates:
