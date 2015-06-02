@@ -6,7 +6,7 @@ Name your model properties by this formula...
 
 ```js
 {
-  TemplateName_valueName: "string"
+  TemplateName_valueName: "string",
   TemplateName_partialName: {
     PartialName_valueName: "string"
   }
