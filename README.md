@@ -6,12 +6,19 @@ Name your model properties by this formula...
 
 ```js
 {
-  TemplateName_valueName: "content string"
+  TemplateName_valueName: "string"
+  TemplateName_partialName: {
+    PartialName_valueName: "string"
+  }
 }
 ```
 ...and use it in your templates:
 ```html
 {{TemplateName_valueName}}
+
+{{#TemplateName_partialName}}
+  {{>PartialName}}
+{{/TemplateName_partialName}}
 ```
 
 ## Example
@@ -51,9 +58,9 @@ When rendering the post, we are using this model:
 }
 ```
 
-Everything works fine right now, but what if we are missing the author `title`?
+Everything works fine right now, but what if the author `title` was somehow missing?
 
-Due to the inheritance in Mustache, this would cause the rendered result to use the `title`-entry, one level up from the `author`-entry, when rendering the author partial, giving us this result:
+Due to the **inheritance** in Mustache, it would cause the rendered result to use the `title`-entry, one level up from the `author`-entry, when rendering the author partial. Giving us this incorrect result:
 
 ```html
 <article>
@@ -69,7 +76,7 @@ Due to the inheritance in Mustache, this would cause the rendered result to use 
 </article>
 ```
 
-By using this set of naming conventions, we solve the problem in the above scenario, and we make our templates more maintainable:
+By using this set of naming conventions, we solve the problem in the above scenario, and make our templates more maintainable:
 
 `Post.mustache`:
 ```
