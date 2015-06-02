@@ -1,90 +1,70 @@
 # Mustache naming conventions
-A set of naming conventions when working with [Mustache](https://mustache.github.io/) templates. It will make your tag names clear, and model inheritance more maintainable.
+A set of naming conventions when working with [Mustache](https://mustache.github.io/). Helping you write clear and maintainable templates, safe from data inheritance problems.
 
 ## Naming
 Name your model properties by this formula...
 
-```
+```js
 {
-  NameOfTemplate_nameOfProperty: "This is the content!"
+  TemplateName_valueName: "content string"
 }
 ```
 ...and use it in your templates:
-```
-{{NameOfTemplate_nameOfProperty}}
+```html
+{{TemplateName_valueName}}
 ```
 
 ## Example
-Let's look at the sample "post"-template below. In the post we are rendering the post title (`{{title}}`) and content (`{{content}}`). We are also using a partial for the meta information (`{{>meta}}`):
+Let's look at the sample "post"-template below. In the post we are rendering the post title (`{{title}}`), post content (`{{{content}}}`) and we're using a partial for the author information (`{{>author}}`):
 
 `post.mustache`:
-```
+```html
 <article>
   <h1>
     {{title}}
   </h1>
-  <p>
-    {{content}}
-  </p>
-  {{#meta}}
-    {{>meta}}
-  {{/meta}}
+  
+  {{{content}}}
+    
+  {{#author}}
+    {{>author}}
+  {{/author}}
 </article>
 ```
 
-`meta.mustache`:
-```
+`author.mustache`:
+```html
 <div>
-  <p>
-    Posted at: {{content}}
-  </p>
-  <p>
-    Author: {{author}}
-  </p>
+  <p>Posted by {{name}}, {{title}}</p>
 </div>
 ```
 When rendering the post, we are using this model:
 
-```
+```js
 {
-  title: "This is my first post!",
-  content: "The content of my first post is great."
-  meta: {
-    content: "2015-06-01",
-    author: "Jane Doe"
+  title: "An interesting article!",
+  content: "<p>The content of my article is great.</p>"
+  author: {
+    name: "Jane Doe",
+    title: "anthropology professor"
   }
 }
 ```
 
-Everything works fine right now, but what if we are missing the date for the meta? Then the model would look like this:
+Everything works fine right now, but what if we are missing the author `title`?
 
-```
-{
-  title: "This is my first post!",
-  content: "The content of my first post is great."
-  meta: {
-    author: "Jane Doe"
-  }
-}
-```
+Due to the inheritance in Mustache, this would cause the rendered result to use the `title`-entry, one level up from the `author`-entry, when rendering the author partial, giving us this result:
 
-Due to the inheritance in Mustache, this would cause the rendered result to use the `content`-entry, one level up from the `meta`-entry, when rendering the meta partial, giving us this result:
-
-```
+```html
 <article>
   <h1>
-    This is my first post!
+    An interesting article!
   </h1>
-  <p>
-    The content of my first post is great.
-  </p>
+  
+  <p>The content of my article is great.</p>
+  
   <div>
-    <p>
-      Posted at: The content of my first post is great.
-    </p>
-    <p>
-      Author: Jane Doe
-    </p>
+    <p>Posted by Jane Doe, An interesting article!</p>
   </div>
 </article>
 ```
@@ -97,33 +77,30 @@ By using this set of naming conventions, we solve the problem in the above scena
   <h1>
     {{Post_title}}
   </h1>
-  <p>
-    {{Post_content}}
-  </p>
-  {{#Post_meta}}
-    {{>Meta}}
-  {{/Post_meta}}
+  
+  {{{Post_content}}}
+  
+  {{#Post_author}}
+    {{>Author}}
+  {{/Post_author}}
 </article>
 ```
 
 `Meta.mustache`:
 ```
 <div>
-  <p>
-    Posted at: {{Meta_content}}
-  </p>
-  <p>
-    Author: {{Meta_author}}
-  </p>
+  <p>A post by {{Author_name}}, {{Author_title}}</p>
 </div>
 ```
-```
+
+Model:
+```js
 {
-  Post_title: "This is my first post!",
-  Post_content: "The content of my first post is great."
-  Post_meta: {
-    Meta_content: "2015-06-01",
-    Meta_author: "Jane Doe"
+  Post_title: "An interesting article!",
+  Post_content: "<p>The content of my article is great.</p>"
+  Post_author: {
+    Author_name: "Jane Doe",
+    Author_title: "anthropology professor"
   }
 }
 ```
